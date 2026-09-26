@@ -1,0 +1,260 @@
+
+  <!DOCTYPE html>
+  <html lang="en" class="dark">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=%GP_ASSET_VERSION%" />
+      <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png?v=%GP_ASSET_VERSION%" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=%GP_ASSET_VERSION%" />
+      <link rel="manifest" href="/manifest.webmanifest" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-title" content="Garuda Prime" />
+      <meta http-equiv="Permissions-Policy" content="camera=(self), geolocation=(self), microphone=()" />
+      <meta name="theme-color" content="#04090f" />
+      <link rel="canonical" href="%VITE_APP_ORIGIN%/" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link rel="preconnect" href="https://accounts.google.com" />
+      <link rel="preconnect" href="https://apis.google.com" />
+      <meta name="gp-asset-version" content="%GP_ASSET_VERSION%" />
+      <link rel="preload" as="image" href="/splash-logo@2x.png?v=%GP_ASSET_VERSION%" type="image/png" imagesrcset="/splash-logo.png?v=%GP_ASSET_VERSION% 512w, /splash-logo@2x.png?v=%GP_ASSET_VERSION% 1024w" imagesizes="140px" />
+      <title>Garuda Prime · AI · Web3 · Syariah Ecosystem</title>
+      <meta name="description" content="Garuda Prime, aplikasi dompet Syariah Web3. Kirim, terima, bayar merchant, dan kelola GAT di Sidra Network." />
+      <meta name="application-name" content="Garuda Prime" />
+      <meta property="og:site_name" content="Garuda Prime" />
+      <meta property="og:title" content="Garuda Prime · AI · Web3 · Syariah Ecosystem" />
+      <meta property="og:description" content="Garuda Prime, aplikasi dompet Syariah Web3. Kirim, terima, bayar merchant, dan kelola GAT di Sidra Network." />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://app.garudaprime.id/" />
+      <meta property="og:image" content="https://app.garudaprime.id/og-share.jpg?v=2" />
+      <meta property="og:image:secure_url" content="https://app.garudaprime.id/og-share.jpg?v=2" />
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="Garuda Prime, AI · Web3 · Syariah Ecosystem" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="Garuda Prime · AI · Web3 · Syariah Ecosystem" />
+      <meta name="twitter:description" content="Garuda Prime, aplikasi dompet Syariah Web3. Kirim, terima, bayar merchant, dan kelola GAT di Sidra Network." />
+      <meta name="twitter:image" content="https://app.garudaprime.id/og-share.jpg?v=2" />
+      <script>
+        (function () {
+          try {
+            var REFERRAL_LOCKED = true;
+            if (REFERRAL_LOCKED) return;
+            var params = new URLSearchParams(location.search);
+            var ref = (params.get("ref") || params.get("referral") || "").trim();
+            if (ref) {
+              sessionStorage.setItem("gp_pending_referral_code", ref.toUpperCase());
+              sessionStorage.setItem("gp_referral_guest_landing", "1");
+              sessionStorage.removeItem("gp_pending_auth_phase");
+              sessionStorage.removeItem("gp_registration_step");
+              sessionStorage.removeItem("gp_registration_wallet");
+              sessionStorage.removeItem("gp_account_preview");
+              sessionStorage.removeItem("gp_oauth_pending");
+              localStorage.removeItem("garuda_prime_session");
+              localStorage.removeItem("garuda_prime_remember");
+              localStorage.removeItem("garuda_prime_uid");
+              localStorage.removeItem("garuda_prime_wallet");
+              params.delete("ref");
+              params.delete("referral");
+              if (!params.get("entry")) params.set("entry", "auth");
+              var qs = params.toString();
+              history.replaceState({}, "", location.pathname + (qs ? "?" + qs : "") + location.hash);
+              document.documentElement.classList.remove("gp-oauth-pending");
+              var boot = document.getElementById("gp-oauth-boot-overlay");
+              if (boot) boot.setAttribute("hidden", "");
+            }
+          } catch (e) {}
+        })();
+      </script>
+      <script>
+        (function () {
+          try {
+            var h = location.hostname.toLowerCase();
+            if (h === "garudaprime.id" || h === "www.garudaprime.id") {
+              location.replace("https://app.garudaprime.id" + location.pathname + location.search + location.hash);
+            }
+          } catch (e) {}
+        })();
+      </script>
+      <script>
+        (function () {
+          try {
+            var key = "garuda_prime_theme";
+            var mig = "gp_theme_dark_default_v2";
+            var lightOpt = "gp_theme_user_light_opt_in";
+            if (!localStorage.getItem(mig)) {
+              localStorage.removeItem("gp_theme_dark_default_v1");
+              localStorage.setItem(mig, "1");
+              localStorage.setItem(key, "dark");
+              localStorage.removeItem(lightOpt);
+            }
+            var pref = localStorage.getItem(key) || "dark";
+            if (pref === "light" && !localStorage.getItem(lightOpt)) {
+              pref = "dark";
+              localStorage.setItem(key, "dark");
+            }
+            var dark = pref === "dark"
+              || (pref === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+            var root = document.documentElement;
+            root.classList.remove("light", "dark");
+            root.classList.add(dark ? "dark" : "light");
+            if (pref === "auto") root.setAttribute("data-theme-pref", "auto");
+            root.style.colorScheme = dark ? "dark" : "light";
+          } catch (e) {}
+        })();
+      </script>
+      <style>
+        html { color-scheme: dark; }
+        html.light { color-scheme: light; }
+        html, body {
+          height: 100%;
+          margin: 0;
+          background: #04090f;
+          color: #e2e8f0;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-rendering: optimizeLegibility;
+        }
+        html.light, html.light body { background: #f4f8f6; color: #0f172a; }
+        #root { height: 100%; background: #04090f; }
+        html.light #root { background: #f4f8f6; }
+        html.gp-oauth-pending, html.gp-oauth-pending body { background: #04090f; }
+        html.light.gp-oauth-pending, html.light.gp-oauth-pending body { background: #f4f8f6; }
+        html.gp-oauth-pending #root { background: #04090f; }
+        html.light.gp-oauth-pending #root { background: #f4f8f6; }
+        #gp-oauth-boot-overlay {
+          position: fixed; inset: 0; z-index: 2147483645;
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          background: linear-gradient(165deg, #04090f 0%, #0b1629 45%, #04090f 100%);
+          font-family: Outfit, Inter, system-ui, sans-serif;
+          padding: 2rem 1.5rem;
+          text-align: center;
+        }
+        html.light #gp-oauth-boot-overlay {
+          background: linear-gradient(165deg, #f4f8f6 0%, #e8f0ec 45%, #f4f8f6 100%);
+        }
+        #gp-oauth-boot-overlay[hidden] { display: none; }
+        #gp-oauth-boot-overlay .gp-boot-brand {
+          margin: 0 0 0.75rem; font-size: 0.7rem; font-weight: 600;
+          letter-spacing: 0.28em; text-transform: uppercase; color: #059669;
+        }
+        #gp-oauth-boot-overlay .gp-boot-logo-img,
+        #gp-static-boot .gp-boot-logo-img {
+          width: 140px; height: 140px; object-fit: contain; margin: 0 auto 1rem;
+        }
+        #gp-oauth-boot-overlay .gp-boot-sub {
+          margin: 0; max-width: 280px; font-size: 0.875rem; line-height: 1.5; color: #94a3b8;
+        }
+        html.light #gp-oauth-boot-overlay .gp-boot-sub { color: #52525b; }
+        #gp-oauth-boot-overlay .gp-boot-bar {
+          margin-top: 2rem; width: min(72vw, 12rem); height: 4px; border-radius: 999px;
+          background: rgba(5, 150, 105, 0.15); overflow: hidden;
+        }
+        #gp-oauth-boot-overlay .gp-boot-bar > span {
+          display: block; height: 100%; width: 40%; border-radius: 999px;
+          background: linear-gradient(90deg, #059669, #34d399);
+          animation: gp-boot-bar 1.4s ease-in-out infinite;
+        }
+        @keyframes gp-boot-bar {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(260%); }
+        }
+        html.gp-skip-static-boot #gp-static-boot {
+          display: none !important;
+        }
+      </style>
+      <script>
+        (function () {
+          try {
+            var qs = new URLSearchParams(location.search);
+            var entry = qs.get("entry");
+            if (entry === "auth" || entry === "login" || entry === "onboarding") {
+              sessionStorage.setItem("gp_app_entry", entry === "login" ? "auth" : entry);
+              document.documentElement.classList.add("gp-skip-static-boot");
+            }
+            var flow = qs.get("flow");
+            if (flow === "wallet-otp") {
+              sessionStorage.setItem("gp_app_flow", flow);
+            }
+          } catch (e) {}
+        })();
+      </script>
+      <script>
+        (function () {
+          try {
+            var path = location.pathname || "";
+            if (path === "/auth/kycport/callback") {
+              var qs = new URLSearchParams(location.search);
+              var hash = new URLSearchParams((location.hash || "").replace(/^#/, ""));
+              var hasAuth = qs.has("code") || qs.has("state") || qs.has("error")
+                || hash.has("code") || hash.has("state") || hash.has("access_token");
+              if (!hasAuth) {
+                sessionStorage.removeItem("gp_kycport_awaiting");
+                history.replaceState({}, "", "/");
+                return;
+              }
+            }
+          } catch (e) {}
+        })();
+      </script>
+      <script>
+        (function () {
+          try {
+            if (sessionStorage.getItem("gp_referral_guest_landing") === "1") return;
+            if (location.pathname === "/auth/kycport/callback") return;
+            var qsBoot = new URLSearchParams(location.search);
+            var walletOtpReturn = qsBoot.get("flow") === "wallet-otp"
+              || sessionStorage.getItem("gp_app_flow") === "wallet-otp";
+            if (localStorage.getItem("garuda_prime_session") !== "1") {
+              if (!walletOtpReturn) {
+                sessionStorage.removeItem("gp_registration_step");
+              }
+              sessionStorage.removeItem("gp_pending_auth_phase");
+              sessionStorage.removeItem("gp_oauth_pending");
+              sessionStorage.removeItem("gp_kycport_awaiting");
+            }
+            if (sessionStorage.getItem("gp_oauth_pending") === "1") {
+              var qs = new URLSearchParams(location.search);
+              var hash = new URLSearchParams((location.hash || "").replace(/^#/, ""));
+              var hasAuth = qs.has("code") || qs.has("state") || qs.has("error")
+                || hash.has("code") || hash.has("state") || hash.has("access_token");
+              if (!hasAuth) {
+                sessionStorage.removeItem("gp_oauth_pending");
+                return;
+              }
+              document.documentElement.classList.add("gp-oauth-pending");
+              var overlay = document.createElement("div");
+              overlay.id = "gp-oauth-boot-overlay";
+              overlay.setAttribute("role", "status");
+              overlay.setAttribute("aria-live", "polite");
+              overlay.setAttribute("aria-busy", "true");
+              var av = (document.querySelector('meta[name="gp-asset-version"]') || {}).getAttribute?.("content") || "";
+              var vq = av ? ("?v=" + av) : "";
+              overlay.innerHTML = '<p class="gp-boot-brand">Garuda Prime</p><img class="gp-boot-logo-img" src="/splash-logo.png' + vq + '" srcset="/splash-logo.png' + vq + ' 512w, /splash-logo@2x.png' + vq + ' 1024w" sizes="140px" width="140" height="140" alt="" decoding="sync" fetchpriority="high" /><p class="gp-boot-sub">Menyelesaikan login…</p><div class="gp-boot-bar" aria-hidden="true"><span></span></div>';
+              document.body.appendChild(overlay);
+              window.setTimeout(function () {
+                try {
+                  overlay.setAttribute("hidden", "");
+                  document.documentElement.classList.remove("gp-oauth-pending");
+                } catch (e) {}
+              }, 15000);
+            }
+          } catch (e) {}
+        })();
+      </script>
+    </head>
+
+    <body>
+      <div id="root">
+        <div id="gp-static-boot" role="status" aria-live="polite" aria-busy="true" style="min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#04090f;font-family:Outfit,Inter,system-ui,sans-serif;padding:2rem 1.5rem;text-align:center;">
+          <p style="margin:0 0 0.75rem;font-size:0.7rem;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#34d399;">Garuda Prime</p>
+          <img class="gp-boot-logo-img" src="/splash-logo.png?v=%GP_ASSET_VERSION%" srcset="/splash-logo.png?v=%GP_ASSET_VERSION% 512w, /splash-logo@2x.png?v=%GP_ASSET_VERSION% 1024w" sizes="140px" width="140" height="140" alt="" decoding="sync" fetchpriority="high" />
+          <p style="margin:0;max-width:280px;font-size:0.875rem;line-height:1.5;color:#94a3b8;">Memuat aplikasi…</p>
+        </div>
+      </div>
+      <script type="module" src="/src/main.tsx"></script>
+    </body>
+  </html>
+  

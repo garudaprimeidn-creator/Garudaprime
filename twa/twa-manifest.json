@@ -1,0 +1,33 @@
+{
+  "packageId": "id.garudaprime.app",
+  "host": "app.garudaprime.id",
+  "name": "Garuda Prime",
+  "launcherName": "Garuda Prime",
+  "display": "standalone",
+  "themeColor": "#141414",
+  "backgroundColor": "#141414",
+  "startUrl": "/",
+  "iconUrl": "https://app.garudaprime.id/icon-512.png",
+  "maskableIconUrl": "https://app.garudaprime.id/icon-512-maskable.png",
+  "monochromeIconUrl": "https://app.garudaprime.id/icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "garudaprime"
+  },
+  "appVersionName": "1.0.10",
+  "appVersion": "1.0.10",
+  "appVersionCode": 11,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://app.garudaprime.id/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {
+    "playBilling": false,
+    "locationDelegation": true
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableNotifications": false
+}

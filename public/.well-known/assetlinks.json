@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "id.garudaprime.app",
+      "sha256_cert_fingerprints": [
+        "83:17:CB:6A:11:AA:D3:1D:B3:04:9F:BA:6C:86:9A:8D:76:96:98:A7:EA:A7:D8:DB:47:B2:1A:31:F4:79:B7:20"
+      ]
+    }
+  }
+]

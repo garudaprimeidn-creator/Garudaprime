@@ -1,0 +1,5 @@
+{
+  "zakat": { "enabled": true, "nisabRateBps": 250, "protocolFeeBps": 10 },
+  "charity": { "enabled": true, "presetAmountsGat": [25, 50, 100, 250], "protocolFeeBps": 10 },
+  "overview": { "members": "87K+", "volume": "$1.2M", "countries": "27+" }
+}

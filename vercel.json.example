@@ -1,0 +1,136 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(self), microphone=(), geolocation=(self)" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }]
+    },
+    {
+      "source": "/marketing/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }]
+    },
+    {
+      "source": "/index.html",
+      "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }]
+    },
+    {
+      "source": "/app-version.json",
+      "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }]
+    },
+    {
+      "source": "/apk-meta.json",
+      "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }]
+    },
+    {
+      "source": "/downloads/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Type", "value": "application/vnd.android.package-archive" }
+      ]
+    },
+    {
+      "source": "/((?!assets/).*)",
+      "has": [{ "type": "host", "value": "app.garudaprime.id" }],
+      "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }]
+    },
+    {
+      "source": "/icon-:size.png",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }]
+    },
+    {
+      "source": "/apple-touch-icon.png",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }]
+    }
+  ],
+  "functions": {
+    "api/index.ts": {
+      "maxDuration": 60
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/pay/cron/daily-ops",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/qa/cron",
+      "schedule": "0 4 * * *"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/auth/kycport/callback",
+      "has": [{ "type": "host", "value": "garudaprime.id" }],
+      "destination": "https://app.garudaprime.id/auth/kycport/callback",
+      "permanent": false
+    },
+    {
+      "source": "/auth/kycport/callback",
+      "has": [{ "type": "host", "value": "www.garudaprime.id" }],
+      "destination": "https://app.garudaprime.id/auth/kycport/callback",
+      "permanent": false
+    },
+    { "source": "/privacy", "destination": "/privacy/", "permanent": true },
+    { "source": "/terms", "destination": "/terms/", "permanent": true },
+    { "source": "/marketing", "destination": "https://garudaprime.id/", "permanent": true },
+    { "source": "/marketing/", "destination": "https://garudaprime.id/", "permanent": true },
+    {
+      "source": "/index.html",
+      "has": [{ "type": "host", "value": "garudaprime.id" }],
+      "destination": "https://app.garudaprime.id/",
+      "permanent": false
+    },
+    {
+      "source": "/index.html",
+      "has": [{ "type": "host", "value": "www.garudaprime.id" }],
+      "destination": "https://app.garudaprime.id/",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/__/auth/:path*",
+      "destination": "https://YOUR_FIREBASE_PROJECT.firebaseapp.com/__/auth/:path*"
+    },
+    { "source": "/api/(.*)", "destination": "/api/index?path=$1" },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "garudaprime.id" }],
+      "destination": "/marketing/index.html"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "www.garudaprime.id" }],
+      "destination": "/marketing/index.html"
+    },
+    {
+      "source": "/((?!api/|assets/|downloads/|market/|favicon|__|privacy|terms|marketing|shared/|apk-meta\\.json|app-version\\.json|\\.well-known).*)",
+      "has": [{ "type": "host", "value": "app.garudaprime.id" }],
+      "destination": "/index.html"
+    },
+    {
+      "source": "/((?!api/|assets/|downloads/|market/|favicon|__|privacy|terms|marketing|shared/|apk-meta\\.json|app-version\\.json|\\.well-known).*)",
+      "missing": [
+        { "type": "host", "value": "garudaprime.id" },
+        { "type": "host", "value": "www.garudaprime.id" }
+      ],
+      "destination": "/index.html"
+    }
+  ]
+}

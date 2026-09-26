@@ -1,0 +1,38 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "connected_wallets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "order": "ASCENDING" },
+        { "fieldPath": "lastUsed", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "connected_wallets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "order": "ASCENDING" },
+        { "fieldPath": "walletAddress", "order": "ASCENDING" },
+        { "fieldPath": "connectedAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "user_transactions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "order": "ASCENDING" },
+        { "fieldPath": "id", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "marketplace_products",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "published", "order": "ASCENDING" },
+        { "fieldPath": "moderationStatus", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

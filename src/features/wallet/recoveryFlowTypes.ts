@@ -1,0 +1,28 @@
+export type RecoveryFlowLabels = {
+  stepPassword: string;
+  stepPasswordHint: string;
+  stepPhrase: string;
+  stepPhraseHint: string;
+  stepUnlock: string;
+  stepUnlockHint: string;
+  passwordLabel: string;
+  passwordPlaceholder: string;
+  continueBtn: string;
+  unlockBtn: string;
+  copyPhrase: string;
+  copied: string;
+  confirmSaved: string;
+  hidePhrase: string;
+  showPhrase: string;
+  phraseEnterLabel: string;
+  phraseEnterPlaceholder: string;
+  pinRequired: string;
+  pinRequiredBody: string;
+  invalidPin: string;
+  invalidPhrase: string;
+  exportFailed: string;
+  unlockSuccess: string;
+  autoHideNote: string;
+  warningTitle: string;
+  warningBody: string;
+};

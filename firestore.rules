@@ -1,0 +1,350 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isActiveUser() {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'active';
+    }
+
+    function protectedUserFields() {
+      return ['role', 'uid', 'status', 'kycStatus', 'kycTier', 'adminRole'];
+    }
+
+    /** User submits KYC, may set kycStatus → pending (not verified). */
+    function ownerKycStatusSubmit() {
+      return request.resource.data.kycStatus == 'pending'
+        && request.resource.data.kycTier == 1
+        && resource.data.kycStatus in ['none', 'pending', 'rejected', 'limited']
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'kycStatus', 'kycTier', 'kycRejectionReason', 'kycResubmitRequired',
+          'kycFaceVerified', 'kycLivenessPassed', 'kycRiskScore', 'updatedAt',
+        ]);
+    }
+
+    /** User creates or resubmits a pending KYC application. */
+    function ownerKycApplicationWrite() {
+      return request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'pending'
+        && (
+          !resource.exists()
+          || resource.data.status in ['pending', 'rejected', 'none', 'limited']
+        );
+    }
+
+    // users/{uid}
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasAll(['fullName', 'email', 'provider', 'role', 'status', 'kycStatus'])
+        && request.resource.data.role in ['user', 'premium']
+        && request.resource.data.status in ['active', 'pending']
+        && request.resource.data.kycStatus in ['none', 'pending', 'limited'];
+      allow update: if isOwner(uid)
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(protectedUserFields())
+          || ownerKycStatusSubmit()
+        );
+
+      match /devices/{deviceId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && request.resource.data.uid == request.auth.uid;
+        allow update: if isOwner(uid)
+          && request.resource.data.uid == request.auth.uid;
+        allow delete: if isOwner(uid)
+          && resource.data.uid == request.auth.uid;
+      }
+    }
+
+    // Server-only audit (Admin SDK), embedded wallet Fase 4
+    match /embedded_wallet_bindings/{docId} {
+      allow read, write: if false;
+    }
+
+    // Garuda Native Embedded Wallet, server-only (ADR-006)
+    match /garuda_native_wallets/{docId} {
+      allow read, write: if false;
+    }
+    match /garuda_wallet_sign_logs/{docId} {
+      allow read, write: if false;
+    }
+    match /garuda_sign_sessions/{docId} {
+      allow read, write: if false;
+    }
+    match /garuda_wallet_gas_grants/{docId} {
+      allow read, write: if false;
+    }
+
+    match /connected_wallets/{docId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasAll(['uid', 'walletAddress', 'walletType', 'network']);
+      allow update: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    match /login_activity/{docId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasAll(['uid', 'loginMethod', 'device', 'browser', 'timestamp']);
+      allow update: if false;
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    match /wallets/{docId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow update: if isSignedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    match /kyc_verifications/{docId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+    }
+
+    match /kyc_applications/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && ownerKycApplicationWrite();
+      allow update: if isOwner(uid) && ownerKycApplicationWrite();
+    }
+
+    match /marketplace_products/{productId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasAll(['merchantId', 'published', 'moderationStatus']);
+      allow update: if isSignedIn()
+        && (
+          !resource.data.keys().hasAny(['merchantId'])
+          || resource.data.merchantId == request.resource.data.merchantId
+        );
+      allow delete: if false;
+    }
+
+    match /ai_logs/{docId} {
+      allow read: if false;
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasAll(['type', 'message', 'severity']);
+    }
+
+    match /notifications/{docId} {
+      allow read: if isSignedIn()
+        && resource.data.keys().hasAll(['uid'])
+        && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    function isMerchantOwner(merchantId) {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/pay_merchants/$(merchantId))
+        && get(/databases/$(database)/documents/pay_merchants/$(merchantId)).data.ownerUid == request.auth.uid;
+    }
+
+    match /market_orders/{orderId} {
+      allow read: if isSignedIn() && (
+        resource.data.buyerUid == request.auth.uid
+        || isMerchantOwner(resource.data.merchantId)
+      );
+      allow create: if isSignedIn()
+        && request.resource.data.buyerUid == request.auth.uid
+        && request.resource.data.keys().hasAll(['id', 'buyerUid', 'merchantId', 'status', 'createdAt']);
+      allow update: if isSignedIn() && (
+        resource.data.buyerUid == request.auth.uid
+        || isMerchantOwner(resource.data.merchantId)
+      );
+      allow delete: if false;
+    }
+
+    match /user_portfolios/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /utility_nfts/{docId} {
+      allow read, write: if false;
+    }
+
+    match /user_inbox/{docId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow update: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    match /user_transactions/{docId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create, update: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasAll(['id', 'uid', 'type', 'amount', 'status']);
+      allow delete: if false;
+    }
+
+    match /platform_config/{docId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /fee_ledger/{docId} {
+      allow read: if false;
+      allow write: if false;
+    }
+
+    match /protocol_treasury/{docId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /protocol_settlements/{docId} {
+      allow read, write: if false;
+    }
+
+    match /wallet_auth_nonces/{docId} {
+      allow read, write: if false;
+    }
+
+    match /referrals/{docId} {
+      allow read: if isSignedIn() && resource.data.referrerUid == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /gold_reserves/{docId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /insurance_fund/{docId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /protocol_audits/{docId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /audit_logs/{docId} {
+      allow read, write: if false;
+    }
+
+    match /admin_users/{uid} {
+      allow read, write: if false;
+    }
+
+    match /pay_merchants/{merchantId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /pay_ledgers/{uid} {
+      allow read: if isOwner(uid);
+      allow write: if false;
+    }
+
+    match /pay_receipts/{docId} {
+      allow read: if isSignedIn() && (
+        resource.data.uid == request.auth.uid
+        || isMerchantOwner(resource.data.merchantId)
+      );
+      allow write: if false;
+    }
+
+    match /validator_applications/{docId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'pending'
+        && request.resource.data.keys().hasAll(['uid', 'walletAddress', 'email', 'status']);
+      allow update, delete: if false;
+    }
+
+    match /bridge_claims/{depositId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /community_meta/{docId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && docId == 'feed';
+    }
+
+    match /governance_meta/{docId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && docId == 'proposals';
+    }
+
+    match /governance_proposals/{proposalId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.keys().hasAll(['title', 'description', 'category', 'status', 'createdBy', 'authorName', 'yesVotes', 'noVotes', 'quorum']);
+      allow update: if isSignedIn()
+        && resource.data.createdBy == request.auth.uid
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['yesVotes', 'noVotes']);
+      allow delete: if isSignedIn() && resource.data.createdBy == request.auth.uid;
+
+      match /votes/{voteUid} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn() && voteUid == request.auth.uid
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.vote in ['yes', 'no'];
+        allow update, delete: if false;
+      }
+    }
+
+    match /migration_queue/{docId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'queued'
+        && request.resource.data.keys().hasAll(['uid', 'walletAddress', 'amountGat', 'status']);
+      allow update, delete: if false;
+    }
+
+    function communityPostCounterUpdate() {
+      let changed = request.resource.data.diff(resource.data).affectedKeys();
+      return changed.hasOnly(['likeCount'])
+        || changed.hasOnly(['commentCount']);
+    }
+
+    match /community_posts/{postId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasAll(['uid', 'authorName', 'authorAvatar', 'content', 'likeCount', 'commentCount']);
+      allow update: if isSignedIn() && (
+        communityPostCounterUpdate()
+        || (
+          resource.data.uid == request.auth.uid
+          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['likeCount', 'commentCount'])
+        )
+      );
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+
+      match /likes/{likeUid} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn() && likeUid == request.auth.uid
+          && request.resource.data.uid == request.auth.uid;
+        allow delete: if isSignedIn() && likeUid == request.auth.uid;
+      }
+
+      match /comments/{commentId} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn()
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.keys().hasAll(['uid', 'authorName', 'authorAvatar', 'text']);
+        allow update: if false;
+        allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+      }
+    }
+  }
+}

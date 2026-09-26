@@ -1,0 +1,39 @@
+{
+  "name": "garuda-contracts",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy:sidra": "hardhat run scripts/deploy-gat.cjs --network sidra",
+    "mint:sidra": "hardhat run scripts/mint-gat-supply.cjs --network sidra",
+    "bridge:sidra": "hardhat run scripts/deploy-bridge-vault.cjs --network sidra",
+    "deploy:protocol": "hardhat run scripts/deploy-protocol.cjs --network sidra",
+    "setup:protocol": "hardhat run scripts/setup-protocol.cjs --network sidra",
+    "sweep:treasury": "hardhat run scripts/sweep-to-sc-treasury.cjs --network sidra",
+    "sweep:treasury:dry": "SWEEP_DRY_RUN=1 hardhat run scripts/sweep-to-sc-treasury.cjs --network sidra",
+    "fund:referral-bucket": "hardhat run scripts/fund-referral-bucket.cjs --network sidra",
+    "fund:referral-bucket:dry": "FUND_REFERRAL_DRY_RUN=1 hardhat run scripts/fund-referral-bucket.cjs --network sidra",
+    "deploy:utility-nft": "hardhat run scripts/deploy-utility-nft.cjs --network sidra",
+    "audit:sc-gat": "node scripts/audit-sc-gat-balances.cjs",
+    "recover:stranded": "hardhat run scripts/recover-stranded-pools.cjs --network sidra",
+    "recover:stranded:dry": "SWEEP_DRY_RUN=1 hardhat run scripts/recover-stranded-pools.cjs --network sidra",
+    "legacy:recover-to-owner": "hardhat run scripts/recover-legacy-gat-to-owner.cjs --network sidra",
+    "legacy:recover-to-owner:dry": "SWEEP_DRY_RUN=1 hardhat run scripts/recover-legacy-gat-to-owner.cjs --network sidra",
+    "redeploy:pools-recovery": "hardhat run scripts/redeploy-pools-recovery.cjs --network sidra",
+    "deploy:ledger-anchor": "hardhat run scripts/deploy-ledger-anchor.cjs --network sidra",
+    "deploy:payhub-onchain": "hardhat run scripts/deploy-payhub-onchain.cjs --network sidra",
+    "deploy:payment-direct": "hardhat run scripts/deploy-payment-direct.cjs --network sidra",
+    "deploy:governance-validator": "hardhat run scripts/deploy-governance-validator.cjs --network sidra",
+    "register:payhub-vaults": "hardhat run scripts/register-payhub-merchant-vaults.cjs --network sidra",
+    "node:garuda": "hardhat node --port 9745 --hostname 0.0.0.0",
+    "bootstrap:garuda": "hardhat run scripts/bootstrap-testnet.cjs --network garudaTestnet",
+    "test": "hardhat test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.7",
+    "hardhat": "^2.22.18"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.0.2"
+  }
+}

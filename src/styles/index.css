@@ -1,0 +1,19 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+@import './app-theme.css';
+
+/* HQ text + instant tap targets app-wide */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html, body, button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
