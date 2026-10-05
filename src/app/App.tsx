@@ -40,7 +40,7 @@ import { ProfileAvatar } from "./ProfileAvatar";
 import { WalletSwitcher } from "../features/wallet/WalletSwitcher";
 import {
   LazyCommunityScreen,
-  LazyGarudaChainPanel,
+  LazySidraChainPanel,
   LazyGovernancePanel,
   LazyInvestScreen,
   LazyMainnetMigrationPanel,
@@ -48,7 +48,7 @@ import {
   LazyNftIdentityPanel,
   LazyToolsPanel,
 } from "./lazyScreens";
-import { isPhase2Active, isPhase4Active, isGovernanceEnabled, isMainnetMigrationOpen } from "../lib/ecosystem/garudaEcosystem";
+import { isPhase4Active, isGovernanceEnabled, isMainnetMigrationOpen } from "../lib/ecosystem/garudaEcosystem";
 import { isReferralProgramVisible } from "../lib/referral/referralProgramGate";
 import { fetchSidraStats } from "../lib/web3/sidraExplorer";
 import { fetchUtilityNftPortfolio } from "../lib/nft/utilityNftService";
@@ -898,7 +898,7 @@ const Sidebar = ({
 
   const sidebarLabels: Record<string, string> = {
     "AI Assistant": t.sidebar.ai,
-    "Garuda Chain": t.sidebar.garudaChain,
+    "Sidra Chain": t.sidebar.sidraChain,
     "Payment Gateway": t.sidebar.payment,
     "Referral Program": t.sidebar.referral,
     "Merchant Center": t.sidebar.merchant,
@@ -919,8 +919,8 @@ const Sidebar = ({
       case "AI Assistant":
         toggleOverlay("ai");
         break;
-      case "Garuda Chain":
-        openToolPanel("garuda-chain");
+      case "Sidra Chain":
+        openToolPanel("sidra-chain");
         break;
       case "Payment Gateway":
         setPayQrChannel("onchain");
@@ -973,7 +973,7 @@ const Sidebar = ({
   const referralVisible = isReferralProgramVisible(referralConfig);
 
   const extras = [
-    ...(isPhase2Active() ? [{ icon: <Layers className="w-4 h-4" />, label: "Garuda Chain" }] : []),
+    { icon: <Layers className="w-4 h-4" />, label: "Sidra Chain" },
     ...(isGovernanceEnabled() ? [{ icon: <Vote className="w-4 h-4" />, label: "Governance DAO" }] : []),
     ...(isMainnetMigrationOpen() ? [{ icon: <Rocket className="w-4 h-4" />, label: "Mainnet Migration" }] : []),
     { icon: <Bot className="w-4 h-4" />, label: "AI Assistant" },
@@ -1432,8 +1432,8 @@ const MainApp = () => {
               {overlay === "nftIdentity" && (
                 <LazyNftIdentityPanel onClose={() => setOverlay("none")} />
               )}
-              {overlay === "tool" && activeTool === "garuda-chain" && (
-                <LazyGarudaChainPanel onClose={() => setOverlay("none")} />
+              {overlay === "tool" && activeTool === "sidra-chain" && (
+                <LazySidraChainPanel onClose={() => setOverlay("none")} />
               )}
               {overlay === "tool" && activeTool === "governance" && (
                 <LazyGovernancePanel onClose={() => setOverlay("none")} />
@@ -1441,7 +1441,7 @@ const MainApp = () => {
               {overlay === "tool" && activeTool === "mainnet-migration" && (
                 <LazyMainnetMigrationPanel onClose={() => setOverlay("none")} />
               )}
-              {overlay === "tool" && activeTool && activeTool !== "garuda-chain" && activeTool !== "governance" && activeTool !== "mainnet-migration" && (
+              {overlay === "tool" && activeTool && activeTool !== "sidra-chain" && activeTool !== "governance" && activeTool !== "mainnet-migration" && (
                 <LazyToolsPanel tool={activeTool} onClose={() => setOverlay("none")} />
               )}
             </motion.div>

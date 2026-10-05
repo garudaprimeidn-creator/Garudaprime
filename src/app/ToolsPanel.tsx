@@ -62,7 +62,7 @@ const TOOL_ICONS: Record<ToolPanelId, React.ReactNode> = {
   assets: <Coins className="w-5 h-5" />,
   transactions: <ArrowLeftRight className="w-5 h-5" />,
   "referral-dashboard": <Users className="w-5 h-5" />,
-  "garuda-chain": <BarChart3 className="w-5 h-5" />,
+  "sidra-chain": <BarChart3 className="w-5 h-5" />,
   "my-orders": <Package className="w-5 h-5" />,
 };
 

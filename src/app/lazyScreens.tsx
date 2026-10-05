@@ -20,8 +20,8 @@ const InvestScreenLazy = retryLazy(() =>
 const ToolsPanelLazy = retryLazy(() =>
   import("./ToolsPanel").then((m) => ({ default: m.ToolsPanel })),
 );
-const GarudaChainPanelLazy = retryLazy(() =>
-  import("./GarudaChainPanel").then((m) => ({ default: m.GarudaChainPanel })),
+const SidraChainPanelLazy = retryLazy(() =>
+  import("./SidraChainPanel").then((m) => ({ default: m.SidraChainPanel })),
 );
 const GovernancePanelLazy = retryLazy(() =>
   import("./GovernancePanel").then((m) => ({ default: m.GovernancePanel })),
@@ -54,8 +54,8 @@ export const LazyToolsPanel = ({
     {withSuspense(<ToolsPanelLazy tool={tool} onClose={onClose} />)}
   </PanelErrorBoundary>
 );
-export const LazyGarudaChainPanel = (props: React.ComponentProps<typeof GarudaChainPanelLazy>) =>
-  withSuspense(<GarudaChainPanelLazy {...props} />);
+export const LazySidraChainPanel = (props: React.ComponentProps<typeof SidraChainPanelLazy>) =>
+  withSuspense(<SidraChainPanelLazy {...props} />);
 export const LazyGovernancePanel = (props: React.ComponentProps<typeof GovernancePanelLazy>) =>
   withSuspense(<GovernancePanelLazy {...props} />);
 export const LazyMainnetMigrationPanel = (props: React.ComponentProps<typeof MainnetMigrationPanelLazy>) =>

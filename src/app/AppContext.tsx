@@ -228,7 +228,7 @@ export type Overlay =
   | "importToken"
   | "nftIdentity";
 
-export type ToolPanelId = "analytics" | "reports" | "devices" | "wallets" | "help" | "garuda-chain" | "governance" | "mainnet-migration" | "merchant" | "assets" | "transactions" | "referral-dashboard" | "my-orders";
+export type ToolPanelId = "analytics" | "reports" | "devices" | "wallets" | "help" | "sidra-chain" | "governance" | "mainnet-migration" | "merchant" | "assets" | "transactions" | "referral-dashboard" | "my-orders";
 
 export type CommunityTab = "overview" | "feed" | "zakat" | "referral" | "learn" | "charity";
 

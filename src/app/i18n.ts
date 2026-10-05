@@ -176,7 +176,7 @@ export const APP_I18N = {
       authenticatingHint: "Mohon tunggu, kami memverifikasi akun Anda.",
       signInOtp: "Masuk dengan OTP",
       socialGoogle: "Google",
-      socialApple: "Apple",
+      socialMicrosoft: "Microsoft",
       socialWallet: "Dompet",
       loginWallet: {
         title: "Dompet Garuda Prime",
@@ -577,12 +577,11 @@ export const APP_I18N = {
       authEmailInUse: "Email sudah terdaftar",
       authTooManyRequests: "Terlalu banyak percobaan » coba lagi nanti",
       authPopupClosed: "Login dibatalkan",
-      authProviderNotEnabled: "Provider login belum diaktifkan » aktifkan Google di Firebase Console → Authentication",
+      authProviderNotEnabled: "Metode login ini belum diaktifkan. Silakan gunakan metode login lain.",
       authFirestoreDenied: "Firestore menolak akses » jalankan npm run deploy:rules atau aktifkan Firestore",
-      authAppleNotConfigured: "Apple OAuth belum dikonfigurasi » isi Service ID, Team ID, Key ID & Private Key di Firebase",
+      authMicrosoftNotConfigured: "Login Microsoft belum tersedia. Silakan gunakan Google, email, atau Dompet.",
       authUnauthorizedDomain: (host: string) =>
         `Domain "${host}" belum diizinkan » Firebase Console → Authentication → Settings → Authorized domains → tambahkan domain ini`,
-      authAppleLocalhost: "Sign in with Apple tidak mendukung localhost » gunakan Google/email atau deploy ke domain HTTPS",
       trustWalletNotFound: "Trust Wallet tidak terdeteksi » instal ekstensi browser di trustwallet.com/download",
       trustWalletMobile: "Membuka Trust Wallet » scan QR atau gunakan in-app browser",
       walletConnectNotConfigured: "WalletConnect belum dikonfigurasi » isi VITE_WALLETCONNECT_PROJECT_ID",
@@ -1922,7 +1921,7 @@ export const APP_I18N = {
     sidebar: {
       dashboard: "Dashboard", wallet: "Dompet", assets: "Aset", transactions: "Transaksi",
       investment: "Investasi", marketplace: "Marketplace", community: "Komunitas",
-      ai: "Asisten AI", garudaChain: "Garuda Chain", governance: "Governance DAO", mainnetMigration: "Migrasi Mainnet", payment: "Payment Gateway", referral: "Program Referral",
+      ai: "Asisten AI", garudaChain: "Garuda Chain", sidraChain: "Sidra Chain", governance: "Governance DAO", mainnetMigration: "Migrasi Mainnet", payment: "Payment Gateway", referral: "Program Referral",
       merchant: "Merchant Center", analytics: "Analitik", reports: "Laporan",
       security: "Pusat Keamanan", devices: "Manajemen Perangkat", wallets: "Dompet Terhubung",
       kyc: "Verifikasi KYC", settings: "Pengaturan", help: "Pusat Bantuan",
@@ -1930,6 +1929,11 @@ export const APP_I18N = {
       networkStatus: "Garuda Chain ◈ Mainnet Live",
       networkStatusPhase4: "Garuda Chain ◈ Mainnet Live",
       networkBlock: "SDA Network ◈ Blok #4,291,847",
+    },
+    sidraChain: {
+      title: "Sidra Chain",
+      subtitle: "SIDRA Network ◈ statistik live & token GAT",
+      unavailable: "Data Sidra Network belum dapat dimuat. Coba lagi nanti atau buka Blockscout.",
     },
     garudaChain: {
       phaseBadge: "{n}",
@@ -2641,7 +2645,7 @@ export const APP_I18N = {
       authenticatingHint: "Please wait while we verify your account.",
       signInOtp: "Sign in with OTP",
       socialGoogle: "Google",
-      socialApple: "Apple",
+      socialMicrosoft: "Microsoft",
       socialWallet: "Wallet",
       loginWallet: {
         title: "Garuda Prime Wallet",
@@ -3042,12 +3046,11 @@ export const APP_I18N = {
       authEmailInUse: "Email already registered",
       authTooManyRequests: "Too many attempts » try again later",
       authPopupClosed: "Sign-in cancelled",
-      authProviderNotEnabled: "Sign-in provider not enabled » enable Google in Firebase Console → Authentication",
+      authProviderNotEnabled: "This sign-in method is not enabled yet. Please use another sign-in method.",
       authFirestoreDenied: "Firestore access denied » run npm run deploy:rules or enable Firestore",
-      authAppleNotConfigured: "Apple OAuth not configured » add Service ID, Team ID, Key ID & Private Key in Firebase",
+      authMicrosoftNotConfigured: "Microsoft sign-in is not available yet. Please use Google, email, or Wallet.",
       authUnauthorizedDomain: (host: string) =>
         `Domain "${host}" is not authorized » Firebase Console → Authentication → Settings → Authorized domains → add this domain`,
-      authAppleLocalhost: "Sign in with Apple does not support localhost » use Google/email or deploy to an HTTPS domain",
       trustWalletNotFound: "Trust Wallet not detected » install the browser extension at trustwallet.com/download",
       trustWalletMobile: "Opening Trust Wallet » scan the QR or use the in-app browser",
       walletConnectNotConfigured: "WalletConnect not configured » set VITE_WALLETCONNECT_PROJECT_ID",
@@ -4387,7 +4390,7 @@ export const APP_I18N = {
     sidebar: {
       dashboard: "Dashboard", wallet: "Wallet", assets: "Assets", transactions: "Transactions",
       investment: "Investment", marketplace: "Marketplace", community: "Community",
-      ai: "AI Assistant", garudaChain: "Garuda Chain", governance: "Governance DAO", mainnetMigration: "Mainnet Migration", payment: "Payment Gateway", referral: "Referral Program",
+      ai: "AI Assistant", garudaChain: "Garuda Chain", sidraChain: "Sidra Chain", governance: "Governance DAO", mainnetMigration: "Mainnet Migration", payment: "Payment Gateway", referral: "Referral Program",
       merchant: "Merchant Center", analytics: "Analytics", reports: "Reports",
       security: "Security Center", devices: "Device Management", wallets: "Connected Wallets",
       kyc: "KYC Verification", settings: "Settings", help: "Help Center",
@@ -4395,6 +4398,11 @@ export const APP_I18N = {
       networkStatus: "Garuda Chain ◈ Mainnet Live",
       networkStatusPhase4: "Garuda Chain ◈ Mainnet Live",
       networkBlock: "SDA Network ◈ Block #4,291,847",
+    },
+    sidraChain: {
+      title: "Sidra Chain",
+      subtitle: "SIDRA Network ◈ live stats & GAT token",
+      unavailable: "Sidra Network data could not be loaded. Try again later or open Blockscout.",
     },
     garudaChain: {
       phaseBadge: "{n}",
